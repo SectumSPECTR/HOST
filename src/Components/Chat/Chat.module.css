@@ -1,0 +1,70 @@
+/* src/components/Chat/Chat.module.css */
+
+.wrapper {
+  width: 430px; /* Стандартная ширина мобильного экрана */
+  height: 850px;
+  background-color: var(--chat-bg);
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Шапка чата */
+.header {
+  background-color: var(--header-bg);
+  color: white;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 45px;
+  height: 45px;
+  background-color: #7f8c8d;
+  border-radius: 50%;
+}
+
+.headerInfo h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.headerInfo p {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Окно с сообщениями */
+.messagesContainer {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Нижняя панель ввода */
+.inputArea {
+  background-color: #ffffff;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.input {
+  flex: 1;
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  outline: none;
+}
