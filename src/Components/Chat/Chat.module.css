@@ -2,7 +2,7 @@
 
 .wrapper {
   width: 430px; /* Стандартная ширина мобильного экрана */
-  height: 850px;
+  height: 830px;
   background-color: var(--chat-bg);
   border-radius: 20px;
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
@@ -21,11 +21,12 @@
   gap: 12px;
 }
 
-.avatar {
+.avatarImg {
   width: 45px;
   height: 45px;
-  background-color: #7f8c8d;
   border-radius: 50%;
+  object-fit: cover; /* Чтобы картинка не искажалась при масштабировании */
+  flex-shrink: 0;
 }
 
 .headerInfo h3 {

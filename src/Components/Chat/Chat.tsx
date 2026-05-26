@@ -1,8 +1,9 @@
 // src/components/Chat/Chat.tsx
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react'; // Добавили useRef и useEffect
 import { MessageItem } from './MessageItem';
 import styles from './Chat.module.css';
 import type { IMessage, MessageOption } from './types';
+import botAvatar from '../../assets/bot-avatar.png';
 
 // Оставляем только самое первое приветственное сообщение бота как начальное
 const INITIAL_MESSAGES: IMessage[] = [
@@ -22,6 +23,21 @@ export const Chat: React.FC = () => {
   const [messages, setMessages] = useState<IMessage[]>(INITIAL_MESSAGES);
   // Состояние для текста в поле ввода
   const [inputValue, setInputValue] = useState('');
+  // Новое состояние: индикатор того, что бот генерирует ответ
+  const [isTyping, setIsTyping] = useState(false);
+
+  // Создаем реф (маяк) для привязки к нижнему элементу в контейнере сообщений
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Функция автоматического скролла к маяку
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Вызываем скролл каждый раз, когда меняется массив сообщений или статус печати бота
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isTyping]);
 
   // Функция для отправки сообщения от пользователя
   const sendMessage = (text: string) => {
@@ -39,6 +55,9 @@ export const Chat: React.FC = () => {
 
     // 3. Очищаем поле ввода
     setInputValue('');
+
+    // Включаем статус "печатает..." перед запуском таймера бота
+    setIsTyping(true);
 
     // Имитируем ответ бота через 1 секунду (в будущем тут будет запрос к MedGemma)
     simulateBotResponse(text);
@@ -86,6 +105,8 @@ export const Chat: React.FC = () => {
       };
 
       setMessages((prev) => [...prev, botMessage]);
+      // Выключаем статус "печатает...", так как ответ пришел
+      setIsTyping(false);
     }, 1000); // Задержка в 1 секунду для реалистичности
   };
 
@@ -93,10 +114,10 @@ export const Chat: React.FC = () => {
     <div className={styles.wrapper}>
       {/* Шапка */}
       <header className={styles.header}>
-        <div className={styles.avatar}></div>
+        <img src={botAvatar} alt="МедАссистент" className={styles.avatarImg} />
         <div className={styles.headerInfo}>
           <h3>МедАссистент</h3>
-          <p>бот · онлайн</p>
+          <p>бот · {isTyping ? 'печатает...' : 'онлайн'}</p>
         </div>
       </header>
 
@@ -111,6 +132,9 @@ export const Chat: React.FC = () => {
             onOptionClick={handleOptionClick} 
           />
         ))}
+
+        {/* Пустой элемент-маркер, до которого контейнер будет автоматически прокручиваться */}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Панель ввода */}
